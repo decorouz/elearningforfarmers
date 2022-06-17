@@ -1,3 +1,4 @@
+from tabnanny import verbose
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
@@ -12,6 +13,7 @@ class Series(models.Model):
 
     class Meta:
         ordering = ["title"]
+        verbose_name_plural = "series"
 
     def __str__(self) -> str:
         return self.title
@@ -29,13 +31,15 @@ class Course(models.Model):
         Series,
         on_delete=models.CASCADE,
         related_name="courses",
-        verbose_name=_("Subject"),
+        verbose_name=_("series"),
     )
-    title = models.CharField(max_length=200, verbose_name=_("Course tile"))
+    title = models.CharField(max_length=200, verbose_name=_("Course title"))
     slug = models.SlugField(max_length=200)
     overview = models.TextField()
     hero_image = models.ImageField(
-        verbose_name=_("Course image"), upload_to="courses"
+        verbose_name=_("Course image"), 
+        upload_to="courses", 
+        blank=True
     )
     released_date = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
