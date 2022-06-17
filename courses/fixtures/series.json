@@ -1,0 +1,18 @@
+[
+{
+  "model": "courses.series",
+  "pk": 1,
+  "fields": {
+    "title": "Agriculture and risk management",
+    "slug": "agriculture-and-risk-management"
+  }
+},
+{
+  "model": "courses.series",
+  "pk": 2,
+  "fields": {
+    "title": "Climate smart agriculture",
+    "slug": "climate-smart-agriculture"
+  }
+}
+]
