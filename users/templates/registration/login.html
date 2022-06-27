@@ -2,10 +2,9 @@
 
 
 {% block content %}
-<div class="container py-5 h-100 mt-auto">
-   <div class="col-12 col-md-8 ">
-
-      <div class="card-body p-5">
+<div class="py-5 text-center container">
+   <div class="row py-lg-5">
+      <div class="col-lg-6 col-md-8 mx-auto">
 
 
          {% if form.errors %}
@@ -15,7 +14,7 @@
          {% endif %}
          <div>
 
-            <form action="{% url 'login' %}" method="post">
+            <form action="{% url 'users:login' %}" method="post">
                {% csrf_token %}
                {{ form.as_p}}
                <input type="hidden" name="next" value="{{ next}}">
@@ -26,5 +25,8 @@
 
    </div>
 </div>
+
+
+
 
 {% endblock content %}
