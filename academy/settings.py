@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 import os
 from pathlib import Path
+from django.utils.translation import gettext_lazy as _
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,7 +22,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-k#jiufo_yx^+ql5cl&4++^b7f$o$6irln)w1c7eu33#b!7j)$*"
+SECRET_KEY = (
+    "django-insecure-k#jiufo_yx^+ql5cl&4++^b7f$o$6irln)w1c7eu33#b!7j)$*"
+)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -35,6 +38,7 @@ AUTH_USER_MODEL = "users.User"
 # Application definition
 
 INSTALLED_APPS = [
+    "users.apps.UsersConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -43,12 +47,12 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Apps
     "courses.apps.CoursesConfig",
-    "users.apps.UsersConfig",
 ]
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -57,6 +61,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "academy.urls"
+
+LOGIN_REDIRECT_URL = "/"
 
 TEMPLATES = [
     {
@@ -121,6 +127,18 @@ TIME_ZONE = "UTC"
 USE_I18N = True
 
 USE_TZ = True
+
+
+LANGUAGES = (
+    ("en", _("English")),
+    ("yo", _("Yoruba")),
+    ("ha", _("Hausa")),
+    ("ig", _("Igbo")),
+)
+
+LOCALE_PATHS = [
+    BASE_DIR / "locale/",
+]
 
 
 # Static files (CSS, JavaScript, Images)
