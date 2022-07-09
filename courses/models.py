@@ -101,7 +101,7 @@ class Module(models.Model):
 
 class Content(models.Model):
     "Add different type of content to course modules"
-    Module = models.ForeignKey(
+    module = models.ForeignKey(
         Module, related_name="contents", on_delete=models.CASCADE
     )
     content_type = models.ForeignKey(
