@@ -44,13 +44,8 @@ jquery.min.js">
 
     <script>
         $(document).ready(function () {
-            {
-                %
-                block domread %
-            } {
-                %
-                endblock domread %
-            }
+            {% block domread %} 
+            {% endblock domread %}
         });
     </script>
 </body>

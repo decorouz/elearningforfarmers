@@ -4,27 +4,29 @@
 
 {% block content %}
 
-
-<div class="card">
-    <div class="card-header">
-        <h1>My Courses</h1>
-    </div>
-    {% for course in my_courses %}
-
-    <div class="card mt-2">
-        <div class="card-body ">
-            <h5 class="card-title">{{course.title}}</h5>
-            <p class="card-text">{{course.overview}}</p>
-            <a href="{% url 'courses:course_edit' course.id %}">Edit</a>
-            <a href="{% url 'courses:course_delete' course.id %}">Delete</a>
+<div class="container">
+    <div class="mt-5">
+        <div class="text-center card-header">
+            <h1 class="bg-light p-3 ">My Courses</h1>
         </div>
-    </div>
-    {% empty %}
+        {% for course in my_courses %}
 
-    <div class="card-body">
-        <p class="card-text">You haven't created any courses yet.</p>
-        {% endfor %}
-        <a href="{% url 'courses:course_create' %}" class="btn btn-primary">Create New Course</a>
+        <div class="card mt-2">
+            <div class="card-body ">
+                <h5 class="card-title">{{course.title}}</h5>
+                <p class="card-text">{{course.overview}}</p>
+                <a href="{% url 'courses:course_edit' course.id %}">Edit</a>
+                <a href="{% url 'courses:course_delete' course.id %}">Delete</a>
+                <a href="{% url 'courses:course_module_update' course.id %}">Edit Modules</a>
+            </div>
+        </div>
+        {% empty %}
+
+        <div class=" card-body">
+            <p class="card-text">You haven't created any courses yet.</p>
+            {% endfor %}
+            <a href="{% url 'courses:course_create' %}" class="btn btn-primary">Create New Course</a>
+        </div>
     </div>
 </div>
 
