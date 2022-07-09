@@ -69,7 +69,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "academy.urls"
 
-LOGIN_REDIRECT_URL = "/"
+LOGIN_REDIRECT_URL = "courses:home"
 
 TEMPLATES = [
     {
