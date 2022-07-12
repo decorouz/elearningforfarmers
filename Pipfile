@@ -6,7 +6,10 @@ name = "pypi"
 [packages]
 django = "*"
 pillow = "*"
-psycopg2 = "*"
+psycopg2-binary = "*"
+pip = "*"
+install = "*"
+crispy-bootstrap5 = "*"
 
 [dev-packages]
 
