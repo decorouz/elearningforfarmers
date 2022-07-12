@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import (
     LoginRequiredMixin,
     PermissionRequiredMixin,
 )
+from braces.views import CsrfExemptMixin, JsonRequestResponseMixin
 from django.forms.models import modelform_factory
 from django.apps import apps
 from .models import Module, Content
@@ -73,7 +74,7 @@ class CourseDeleteView(OwnerCourseMixin, DeleteView):
     permission_required = "courses.delete_course"
 
 
-class CourseModuleUpdateView(TemplateResponseMixin, View):
+class CourseModuleUpdateView(LoginRequiredMixin, TemplateResponseMixin, View):
     """Handles the formset to add, update and delete modules for specific course"""
 
     template_name = "courses/manage/module/formset.html"
@@ -83,7 +84,11 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
         return ModuleInlineFormSet(instance=self.course, data=data)
 
     def dispatch(self, request, pk):
-        self.course = get_object_or_404(Course, id=pk, owner=request.user)
+        try:
+            self.course = get_object_or_404(Course, id=pk, owner=request.user)
+        except Exception as e:
+            None
+            
         return super().dispatch(request, pk)
 
     def get(self, request, *args, **kwargs):
@@ -104,7 +109,7 @@ class CourseModuleUpdateView(TemplateResponseMixin, View):
 
 # Adding content to course modules.
 # There are four different content types.
-class ContentCreateUpdateView(TemplateResponseMixin, View):
+class ContentCreateUpdateView(LoginRequiredMixin, TemplateResponseMixin, View):
     module = None
     model = None
     obj = None
@@ -131,7 +136,9 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
         self.model = self.get_model(model_name)
 
         if id:
-            self.obj = get_object_or_404(self.model, id=id, creator=request.user)
+            self.obj = get_object_or_404(
+                self.model, id=id, creator=request.user
+            )
         return super().dispatch(request, module_id, model_name, id)
 
     def get(self, request, module_id, model_name, id=None):
@@ -148,7 +155,7 @@ class ContentCreateUpdateView(TemplateResponseMixin, View):
 
         if form.is_valid():
             obj = form.save(commit=False)
-            obj.creator  = request.user
+            obj.creator = request.user
             obj.save()
 
             if not id:
@@ -169,10 +176,40 @@ class ContentDeleteView(View):
         content.delete()
         return redirect("courses:module_content_list", module.id)
 
-class ModuleContentListView(TemplateResponseMixin, View):
+
+class ModuleContentListView(LoginRequiredMixin, TemplateResponseMixin, View):
     template_name = "courses/manage/module/content_list.html"
 
-    def get(self,request, module_id):
-        module = get_object_or_404(Module, id=module_id, course__owner=request.user)
+    def get(self, request, module_id):
+        module = get_object_or_404(
+            Module, id=module_id, course__owner=request.user
+        )
 
         return self.render_to_response({"module": module})
+
+
+# You need a view that recieves the new order of module IDs
+# encoded in JSON
+
+
+class ModuleOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+    """Module that orders the course module"""
+
+    def post(self, request):
+        for id, order in self.request_json.items():
+            Module.objects.filter(id=id, course__owner=request.user).update(
+                order=order
+            )
+        return self.render_json_response({"saved": "OK"})
+
+
+class ContentOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
+    """View to order module content"""
+
+    def post(self, request):
+        for id, order in self.request_json.items():
+
+            Content.objects.filter(
+                id=id, module__course__owner=request.user
+            ).update(order=order)
+        return self.render_json_response({"saved": "OK"})
