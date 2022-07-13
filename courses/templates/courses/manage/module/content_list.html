@@ -7,8 +7,7 @@ Module {{ module.order|add:1}}: {{module.title}}
 {% endblock title %}
 
 {% block content %}
-<div class="container">
-    <div class="mt-5">
+
         {% with course=module.course %}
         <h1 class=" text-center p-3 bg-light">Course "{{course.title}}" </h1>
         <div class="contents">
@@ -58,8 +57,7 @@ Module {{ module.order|add:1}}: {{module.title}}
                 <li><a href="{% url 'courses:module_content_create' module.id "file" %}">File</a></li>
             </ul>
         </div>
-    </div>
-</div>
+
 {% endwith %}
 {% endblock content %}
 

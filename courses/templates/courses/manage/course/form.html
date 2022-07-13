@@ -11,26 +11,23 @@ Create new course
 {% endblock title %}
 
 {% block content %}
-<div class="container">
-    <div class="mt-5">
-        <h1 class=" text-center p-3 bg-light">
-            {% if object %}
-            Edit course "{{object.title}}"
-            {% else %}
-            Create a new course
-            {% endif %}
-        </h1>
-        <div>
-            <h2>Course info</h2>
-            <form action="" method="POST">
-                {{form|crispy}}
-                {% csrf_token %}
 
-                <input type="submit" value="Save course">
+<h1 class=" text-center p-3 bg-light">
+    {% if object %}
+    Edit course "{{object.title}}"
+    {% else %}
+    Create a new course
+    {% endif %}
+</h1>
+<div>
+    <h2>Course info</h2>
+    <form action="" method="POST">
+        {{form|crispy}}
+        {% csrf_token %}
 
-            </form>
-        </div>
-    </div>
+        <input type="submit" value="Save course">
+
+    </form>
 </div>
 
 
