@@ -48,4 +48,14 @@ urlpatterns = [
         views.ContentOrderView.as_view(),
         name="content_order",
     ),
+    # Display all courses for a series
+    path(
+        "series/<slug:subject>",
+        views.CourseListView.as_view(),
+        name="course_list_series",
+    ),
+    # display a single course overview
+    path(
+        "<slug:slug>/", views.CourseDetailView.as_view(), name="course_detail"
+    ),
 ]

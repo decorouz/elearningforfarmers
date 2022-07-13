@@ -3,6 +3,8 @@ from django.urls import reverse_lazy
 from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.views.generic.detail import DetailView
+
 from django.contrib.auth.mixins import (
     LoginRequiredMixin,
     PermissionRequiredMixin,
@@ -13,6 +15,8 @@ from django.apps import apps
 from .models import Module, Content
 from .forms import ModuleInlineFormSet
 from courses.models import Course
+from django.db.models import Count
+from .models import Series
 
 # Create your views here.
 class HomeView(ListView):
@@ -88,7 +92,7 @@ class CourseModuleUpdateView(LoginRequiredMixin, TemplateResponseMixin, View):
             self.course = get_object_or_404(Course, id=pk, owner=request.user)
         except Exception as e:
             None
-            
+
         return super().dispatch(request, pk)
 
     def get(self, request, *args, **kwargs):
@@ -213,3 +217,35 @@ class ContentOrderView(CsrfExemptMixin, JsonRequestResponseMixin, View):
                 id=id, module__course__owner=request.user
             ).update(order=order)
         return self.render_json_response({"saved": "OK"})
+
+
+# Creating public views for displaying course information
+
+# -----List all available courses and optionall filter by series
+
+
+class CourseListView(TemplateResponseMixin, View):
+    """List all available course, optionally filter by subject"""
+
+    model = Course
+    template_name = "courses/course/list.html"
+
+    def get(self, request, subject=None):
+        # retrieve all series, including the total number of courses for each series
+        series = Series.objects.annotate(total_courses=Count("courses"))
+        
+        # retrieve all courses, including the total number of modules contained in each course
+        courses = Course.objects.annotate(total_modules=Count("modules"))
+        [print( s, s.total_modules)for s in courses]
+
+        if subject:
+            subject = get_object_or_404(Series, slug=subject)
+            courses = courses.filter(series=subject)
+        return self.render_to_response(
+            {"series": series, "subject": subject, "courses": courses}
+        )
+
+
+class CourseDetailView(DetailView):
+    model = Course
+    template_name = "courses/course/detail.html"
