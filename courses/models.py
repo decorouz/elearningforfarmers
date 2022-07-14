@@ -20,6 +20,7 @@ such as text, images, files and videos.
 """
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
@@ -28,7 +29,7 @@ from .fields import OrderField
 from django.utils.text import slugify
 
 
-User = get_user_model()
+# User = get_user_model()
 
 
 class Series(models.Model):
@@ -148,52 +149,52 @@ class Video(ItemBase):
     video_url = models.URLField()
 
 
-class Question(models.Model):
-    course = models.ForeignKey(
-        Course,
-        related_name="questions",
-        on_delete=models.CASCADE,
-        verbose_name=_("questions"),
-    )
-    text = models.CharField(
-        max_length=1000, verbose_name=_("text"), null=True, blank=True
-    )
+# class Question(models.Model):
+#     course = models.ForeignKey(
+#         Course,
+#         related_name="questions",
+#         on_delete=models.CASCADE,
+#         verbose_name=_("questions"),
+#     )
+#     text = models.CharField(
+#         max_length=1000, verbose_name=_("text"), null=True, blank=True
+#     )
 
-    def __str__(self) -> str:
-        return self.text
-
-
-class Answer(models.Model):
-    question = models.ForeignKey(
-        Question, related_name="correct_answer", on_delete=models.CASCADE
-    )
-    text = models.CharField(max_length=1000, verbose_name=_("text"))
-    correct_answer = models.BooleanField(blank=True)
-
-    def __str__(self) -> str:
-        return self.text
+#     def __str__(self) -> str:
+#         return self.text
 
 
-class UserResponse(models.Model):
-    user = models.ForeignKey(
-        User,
-        on_delete=models.CASCADE,
-        related_name="user",
-        verbose_name=_("users"),
-    )
-    question = models.ForeignKey(
-        Question,
-        related_name="question",
-        verbose_name=_("user response"),
-        on_delete=models.CASCADE,
-    )
-    response = models.ForeignKey(
-        Answer,
-        on_delete=models.DO_NOTHING,
-        related_name="response_answer",
-        verbose_name=_("user answer"),
-    )
+# class Answer(models.Model):
+#     question = models.ForeignKey(
+#         Question, related_name="correct_answer", on_delete=models.CASCADE
+#     )
+#     text = models.CharField(max_length=1000, verbose_name=_("text"))
+#     correct_answer = models.BooleanField(blank=True)
 
-    class Meta:
-        # ensures that a user provides an answer per question
-        unique_together = ("question", "user")
+#     def __str__(self) -> str:
+#         return self.text
+
+
+# class UserResponse(models.Model):
+#     user = models.ForeignKey(
+#         User,
+#         on_delete=models.CASCADE,
+#         related_name="user",
+#         verbose_name=_("users"),
+#     )
+#     question = models.ForeignKey(
+#         Question,
+#         related_name="question",
+#         verbose_name=_("user response"),
+#         on_delete=models.CASCADE,
+#     )
+#     response = models.ForeignKey(
+#         Answer,
+#         on_delete=models.DO_NOTHING,
+#         related_name="response_answer",
+#         verbose_name=_("user answer"),
+#     )
+
+#     class Meta:
+#         # ensures that a user provides an answer per question
+#         unique_together = ("question", "user")

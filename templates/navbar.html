@@ -29,7 +29,7 @@
          <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdown"
                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-               <span class="navbar-text mx-1">{{request.user}}</span>
+               <span class="navbar-text mx-1">{{request.user.get_full_name}}</span>
                <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" height="40"
                   alt="Black and White Portrait of a Man" loading="lazy" />
             </a>
@@ -44,7 +44,7 @@
                   <hr class="dropdown-divider">
                </li>
                <li>
-                  <a class="dropdown-item" href="{% url 'users:logout' %}">Logout</a>
+                  <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
                </li>
             </ul>
          </div>
@@ -53,7 +53,7 @@
          <span class="navbar-text">
             You are not logged in.
          </span>
-         (<a href="{% url 'users:login' %}">Log in</a>) <a href="#">Register</a>
+         (<a href="{% url 'login' %}">Log in</a>) <a href="#">Register</a>
          {% endif %}
 
       </div>

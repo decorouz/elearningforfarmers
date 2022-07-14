@@ -32,14 +32,12 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 # CustomUser mode
-AUTH_USER_MODEL = "users.User"
+# AUTH_USER_MODEL = "users.User"
 
 
 # Application definition
 
 INSTALLED_APPS = [
-    "users.apps.UsersConfig",
-    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -47,6 +45,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     # Apps
     "courses.apps.CoursesConfig",
+    "students.apps.StudentsConfig",
+    "django.contrib.admin",
     # third party
     "crispy_forms",
     "crispy_bootstrap5",
@@ -96,7 +96,7 @@ WSGI_APPLICATION = "academy.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql_psycopg2",
-        "NAME": "baronial-academy",
+        "NAME": "baronialacademy",
         "USER": "user",
         "PASSWORD": os.environ.get("DB_PASSWORD"),
         "HOST": "localhost",
