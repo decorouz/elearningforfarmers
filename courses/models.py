@@ -20,6 +20,7 @@ such as text, images, files and videos.
 """
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.template.loader import render_to_string
 from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -51,6 +52,9 @@ class Course(models.Model):
         related_name="course_creator",
         verbose_name=_("Course creator"),
         null=True,
+    )
+    students = models.ManyToManyField(
+        User, related_name="courses_joined", blank=True
     )
     series = models.ForeignKey(
         Series,
@@ -131,6 +135,12 @@ class ItemBase(models.Model):
 
     def __str__(self) -> str:
         return self.title
+
+    def render(self):
+        return render_to_string(
+            f"courses/content/{self._meta.model_name}.html",
+            {"item": self}
+        )
 
 
 class Text(ItemBase):

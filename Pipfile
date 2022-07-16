@@ -11,6 +11,7 @@ pip = "*"
 install = "*"
 crispy-bootstrap5 = "*"
 django-braces = "*"
+django-embed-video = "*"
 
 [dev-packages]
 

@@ -17,6 +17,7 @@ from .forms import ModuleInlineFormSet
 from courses.models import Course
 from django.db.models import Count
 from .models import Series
+from students.forms import CourseEnrollForm
 
 # Create your views here.
 class HomeView(ListView):
@@ -125,8 +126,7 @@ class ContentCreateUpdateView(LoginRequiredMixin, TemplateResponseMixin, View):
         return None
 
     def get_form(self, model, *args, **kwargs):
-        print(f" Kwargs: {kwargs}")
-        print(f" Args: {args}")
+
         Form = modelform_factory(
             model, exclude=["creator", "order", "created", "updated"]
         )
@@ -233,10 +233,9 @@ class CourseListView(TemplateResponseMixin, View):
     def get(self, request, subject=None):
         # retrieve all series, including the total number of courses for each series
         series = Series.objects.annotate(total_courses=Count("courses"))
-        
+
         # retrieve all courses, including the total number of modules contained in each course
         courses = Course.objects.annotate(total_modules=Count("modules"))
-        [print( s, s.total_modules)for s in courses]
 
         if subject:
             subject = get_object_or_404(Series, slug=subject)
@@ -249,3 +248,12 @@ class CourseListView(TemplateResponseMixin, View):
 class CourseDetailView(DetailView):
     model = Course
     template_name = "courses/course/detail.html"
+
+    def get_context_data(self, **kwargs):
+        """Used to populate a dictionary to use as a template context"""
+        context = super().get_context_data(**kwargs)
+
+        context["enroll_form"] = CourseEnrollForm(
+            initial={"course": self.object}
+        )
+        return context

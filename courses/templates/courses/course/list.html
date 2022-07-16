@@ -46,9 +46,11 @@ All courses
                 {{subject}}
             </a>.
             {{ course.total_modules}} modules.
-            Instructor: {{ course.owner.name}}
+            Instructor: {{ course.owner.get_full_name}}
         </p>
         {% endwith %}
+        {% empty%}
+        <p>Nothing to see</p>
     {% endfor %}
 </div>
 {% endblock content %}
