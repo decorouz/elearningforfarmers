@@ -12,6 +12,7 @@ install = "*"
 crispy-bootstrap5 = "*"
 django-braces = "*"
 django-embed-video = "*"
+python-memcached = "*"
 
 [dev-packages]
 
