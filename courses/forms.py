@@ -1,5 +1,6 @@
 from django import forms
 from django.forms.models import inlineformset_factory
+
 from .models import Course, Module
 
 # Since Course is divided into a variable number of

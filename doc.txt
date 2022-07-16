@@ -1,0 +1,7 @@
+Setup REST framework
+
+1. Define serializers: Specify how data will be serialize
+    - Serializer: For normal python classes
+    - ModelSerializer: Model instance
+    - HyperlinkedSerializer
+2. 

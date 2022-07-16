@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Series, Course, Module
+
+from .models import Course, Module, Series
 
 # Register your models here.
 

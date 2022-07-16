@@ -1,15 +1,14 @@
+from courses.models import Course
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic.edit import FormView
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
+from django.views.generic.edit import CreateView, FormView
 from django.views.generic.list import ListView
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import authenticate, login
-from .forms import CourseEnrollForm
-from courses.models import Course
 
+from .forms import CourseEnrollForm
 
 # Create your views here.
 
@@ -43,9 +42,7 @@ class StudentEnrollCourseView(LoginRequiredMixin, FormView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy(
-            "students:student_course_detail", args=[self.course.id]
-        )
+        return reverse_lazy("students:student_course_detail", args=[self.course.id])
 
 
 class StudentCourseListView(LoginRequiredMixin, ListView):

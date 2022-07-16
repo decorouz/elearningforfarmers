@@ -14,6 +14,7 @@ import os
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 from django.urls import reverse_lazy
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -51,7 +52,8 @@ INSTALLED_APPS = [
     "crispy_forms",
     "crispy_bootstrap5",
     "embed_video",
-    "memcache_status"
+    "memcache_status",
+    "rest_framework",
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
@@ -71,7 +73,7 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = "academy.urls"
 
-LOGIN_REDIRECT_URL = reverse_lazy('students:student_course_list')
+LOGIN_REDIRECT_URL = reverse_lazy("students:student_course_list")
 
 TEMPLATES = [
     {
@@ -169,8 +171,14 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
 CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': '127.0.0.1:11211',
+    "default": {
+        "BACKEND": "django.core.cache.backends.memcached.MemcachedCache",
+        "LOCATION": "127.0.0.1:11211",
     }
+}
+
+REST_FRAMEWORK = {
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly"
+    ]
 }

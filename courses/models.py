@@ -18,17 +18,16 @@ such as text, images, files and videos.
 12. user django polymorphic for question answer models
 
 """
-from django.db import models
 from django.contrib.auth import get_user_model
-from django.template.loader import render_to_string
 from django.contrib.auth.models import User
-from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
-from .fields import OrderField
-
+from django.db import models
+from django.template.loader import render_to_string
 from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
 
+from .fields import OrderField
 
 # User = get_user_model()
 
@@ -53,9 +52,7 @@ class Course(models.Model):
         verbose_name=_("Course creator"),
         null=True,
     )
-    students = models.ManyToManyField(
-        User, related_name="courses_joined", blank=True
-    )
+    students = models.ManyToManyField(User, related_name="courses_joined", blank=True)
     series = models.ForeignKey(
         Series,
         on_delete=models.CASCADE,
@@ -106,9 +103,7 @@ class Module(models.Model):
 
 class Content(models.Model):
     "Add different type of content to course modules"
-    module = models.ForeignKey(
-        Module, related_name="contents", on_delete=models.CASCADE
-    )
+    module = models.ForeignKey(Module, related_name="contents", on_delete=models.CASCADE)
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
@@ -138,8 +133,7 @@ class ItemBase(models.Model):
 
     def render(self):
         return render_to_string(
-            f"courses/content/{self._meta.model_name}.html",
-            {"item": self}
+            f"courses/content/{self._meta.model_name}.html", {"item": self}
         )
 
 
