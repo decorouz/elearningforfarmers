@@ -233,7 +233,7 @@ class CourseListView(TemplateResponseMixin, View):
 
     def get(self, request, subject=None):
         # retrieve all series, including the total number of courses for each series
-        
+
         # series = Series.objects.annotate(total_courses=Count("courses"))
 
         series = cache.get("all_series")
@@ -242,11 +242,23 @@ class CourseListView(TemplateResponseMixin, View):
             cache.set("all_series", series)
 
         # retrieve all courses, including the total number of modules contained in each course
-        courses = Course.objects.annotate(total_modules=Count("modules"))
+        all_courses = Course.objects.annotate(total_modules=Count("modules"))
 
         if subject:
             subject = get_object_or_404(Series, slug=subject)
-            courses = courses.filter(series=subject)
+
+            key = f"subject_{subject.id}_courses"
+            courses = cache.get(key)
+
+            if not courses:
+                courses = all_courses.filter(series=subject)
+                cache.set(key, courses)
+        else:
+            courses = cache.get("all_courses")
+            if not courses:
+                courses = all_courses
+                cache.set("all_courses", courses)
+
         return self.render_to_response(
             {"series": series, "subject": subject, "courses": courses}
         )
