@@ -4,6 +4,7 @@ from django.views.generic.base import TemplateResponseMixin, View
 from django.views.generic.list import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
+from django.core.cache import cache
 
 from django.contrib.auth.mixins import (
     LoginRequiredMixin,
@@ -232,7 +233,13 @@ class CourseListView(TemplateResponseMixin, View):
 
     def get(self, request, subject=None):
         # retrieve all series, including the total number of courses for each series
-        series = Series.objects.annotate(total_courses=Count("courses"))
+        
+        # series = Series.objects.annotate(total_courses=Count("courses"))
+
+        series = cache.get("all_series")
+        if not series:
+            series = Series.objects.annotate(total_courses=Count("courses"))
+            cache.set("all_series", series)
 
         # retrieve all courses, including the total number of modules contained in each course
         courses = Course.objects.annotate(total_modules=Count("modules"))
