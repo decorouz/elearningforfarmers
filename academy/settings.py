@@ -46,14 +46,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django.contrib.sites",
-
-
     # Local Apps
     "courses.apps.CoursesConfig",
     "students.apps.StudentsConfig",
     "users.apps.UsersConfig",
     "django.contrib.admin",
-
     # third party
     "crispy_forms",
     "crispy_bootstrap5",
@@ -63,13 +60,20 @@ INSTALLED_APPS = [
     "rest_framework.authtoken",
     "dj_rest_auth",
     "dj_rest_auth.registration",
-
     # django allauth
     "allauth",
     "allauth.account",
     "allauth.socialaccount",
-
 ]
+
+
+SITE_ID = 1
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+
+AUTH_USER_MODEL = "users.User"
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
@@ -185,7 +189,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 SITE_ID = 1
 
