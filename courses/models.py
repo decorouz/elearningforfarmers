@@ -1,23 +1,3 @@
-"""
-TODO
-1. Add different types of content to the course modules,
-such as text, images, files and videos.
-    - Create a Content model that represents the object of any module
-2. Create a field that allows to define order for objects
-1. add subjective and true or false questions
-2. time per question and time for overall quiz
-3. quiz settings
-4. change order
-5. repoduce a quiz already taken
-6. garble form hidden values
-7. change correct answer selection for a question.
-8. business rules - no of takes per quiz per user per month, no of instances a user can set per month, no of quizzes a user can set per month
-9. quiz status
-10. question explanaiton
-11. should we checkin migrations folder??
-12. user django polymorphic for question answer models
-
-"""
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -52,7 +32,9 @@ class Course(models.Model):
         verbose_name=_("Course creator"),
         null=True,
     )
-    students = models.ManyToManyField(User, related_name="courses_joined", blank=True)
+    students = models.ManyToManyField(
+        User, related_name="courses_joined", blank=True
+    )
     series = models.ForeignKey(
         Series,
         on_delete=models.CASCADE,
@@ -103,7 +85,9 @@ class Module(models.Model):
 
 class Content(models.Model):
     "Add different type of content to course modules"
-    module = models.ForeignKey(Module, related_name="contents", on_delete=models.CASCADE)
+    module = models.ForeignKey(
+        Module, related_name="contents", on_delete=models.CASCADE
+    )
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.CASCADE,
