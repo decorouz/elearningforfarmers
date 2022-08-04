@@ -68,10 +68,10 @@ INSTALLED_APPS = [
 
 
 SITE_ID = 1
-ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+# ACCOUNT_USER_MODEL_USERNAME_FIELD = None
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = False
-ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_USERNAME_REQUIRED = True
+# ACCOUNT_AUTHENTICATION_METHOD = "email"
 
 AUTH_USER_MODEL = "users.User"
 
@@ -209,4 +209,18 @@ REST_FRAMEWORK = {
         "rest_framework.authentication.SessionAuthentication",
         "rest_framework.authentication.TokenAuthentication",
     ],
+}
+
+
+# Control the forms that django-allauth uses
+ACCOUNT_FORMS = {
+    "login": "allauth.account.forms.LoginForm",
+    # "add_email": "allauth.account.forms.AddEmailForm",
+    # "change_password": "allauth.account.forms.ChangePasswordForm",
+    # "set_password": "allauth.account.forms.SetPasswordForm",
+    # "reset_password": "allauth.account.forms.ResetPasswordForm",
+    # "reset_password_from_key": "allauth.account.forms.ResetPasswordKeyForm",
+    # "disconnect": "allauth.socialaccount.forms.DisconnectForm",
+    # Use our custom signup form
+    "signup": "users.forms.AcademySignUpForm",
 }
