@@ -2,7 +2,7 @@
 
 <nav class="navbar navbar-dark navbar-expand-lg navbar-light bg-dark">
    <div class="container d-flex justify-content-between">
-      <a class="navbar-brand" href="{% url 'courses:home' %}">Baronial Elearning</a>
+      <a class="navbar-brand" href="{% url 'home' %}">Baronial Elearning</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
          <span class="navbar-toggler-icon"></span>
@@ -12,9 +12,17 @@
             <li class="nav-item">
                <a class="nav-link " aria-current="page" href="#">About the academy</a>
             </li>
+            {% if request.user.type == "STUDENT" %}
+            <li class="nav-item">
+               <a class="nav-link" href="{% url 'courses:course_list' %}">Courses</a>
+            </li>
+            {% else %}
             <li class="nav-item">
                <a class="nav-link" href="{% url 'courses:manage_course_list' %}">Courses</a>
             </li>
+
+            {% endif %}
+
 
             <li class="nav-item">
                <a class="nav-link" href="#">Webinars</a>
@@ -29,13 +37,24 @@
          <div class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center hidden-arrow" href="#" id="navbarDropdown"
                role="button" data-bs-toggle="dropdown" aria-expanded="false">
-               <span class="navbar-text mx-1">{{request.user.get_full_name}}</span>
+               <span class="navbar-text mx-1">{{request.user.name}}</span>
                <img src="https://mdbcdn.b-cdn.net/img/new/avatars/2.webp" class="rounded-circle" height="40"
                   alt="Black and White Portrait of a Man" loading="lazy" />
             </a>
             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuAvatar">
+               {% if request.user.type == "STUDENT" %}
                <li>
-                  <a class="dropdown-item" href="#">My profile</a>
+                  <a class="dropdown-item" href="{% url 'courses:course_list' %}">Dashboard</a>
+               </li>
+               {% else %}
+               <li>
+                  <a class="dropdown-item" href="{% url 'courses:manage_course_list' %}">Dashboard</a>
+               </li>
+
+               {% endif %}
+
+               <li>
+                  <a class="dropdown-item" href="{% url 'users:detail' request.user.username %}">My profile</a>
                </li>
                <li>
                   <a class="dropdown-item" href="#">Settings</a>
@@ -44,7 +63,7 @@
                   <hr class="dropdown-divider">
                </li>
                <li>
-                  <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                  <a class="dropdown-item" href="{% url 'account_logout' %}">Logout</a>
                </li>
             </ul>
          </div>
@@ -53,7 +72,7 @@
          <span class="navbar-text">
             You are not logged in.
          </span>
-         (<a href="{% url 'login' %}">Log in</a>) <a href="#">Register</a>
+         (<a href="{% url 'account_login' %}">Log in</a>) <a href="{% url 'account_signup' %}">Register</a>
          {% endif %}
 
       </div>

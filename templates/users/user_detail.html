@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}
+{% if object.name %}
+{{ object.name }}
+{% else %}
+{{object.username}}
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="container py-5 h-100">
+
+
+    <div class="card-body p-4">
+      <div class="d-flex text-black">
+        <div class="flex-shrink-0">
+          <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-profiles/avatar-1.webp"
+            alt="Generic placeholder image" class="img-fluid" style="width: 180px; border-radius: 10px;">
+        </div>
+        <div class="flex-grow-1 ms-3">
+          {% if object.name %}
+          <h5>{{ object.name }}</h5>
+          {% else %}
+          <h5 class="mb-1">{{object.username}}</h5>
+          {% endif %}
+
+          <p class="mb-2 pb-1" style="color: #2b2a2a;">{{object.type}}</p>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="col">
+      <div class="card">
+
+        <div class="card-body">
+          <h5 class="card-title">User Details</h5>
+
+          <li class="list-group-item d-flex align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Country or Region</div>
+              Content for list item
+            </div>
+
+          </li>
+          <li class="list-group-item d-flex align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">City/State</div>
+              Content for list item
+            </div>
+          </li>
+          <li class="list-group-item d-flex  align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Gender</div>
+              Content for list item
+            </div>
+          </li>
+          <li class="list-group-item d-flex  align-items-start">
+            <div class="ms-2 me-auto">
+              <div class="fw-bold">Organization Type</div>
+              Content for list item
+            </div>
+          </li>
+          {% if object == request.user %}
+          <!-- Action buttons -->
+          <div class="row">
+
+            <div class="col-sm-12">
+              <a class="btn btn-primary" href="{% url 'users:update' %}" role="button">Edit Profile</a>
+              {% comment %} <a class="btn btn-primary" href="{% url 'account_email' %}" role="button">E-Mail</a>
+              {% endcomment %}
+              <!-- Your Stuff: Custom user template urls -->
+            </div>
+
+          </div>
+          <!-- End Action buttons -->
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">Course Details</h5>
+          <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional
+            content. This content is a little bit longer.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+
+
+
+</div>
+{% endblock content %}
