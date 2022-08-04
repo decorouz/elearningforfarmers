@@ -7,28 +7,29 @@ from django.urls import reverse_lazy
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import CreateView, FormView
 from django.views.generic.list import ListView
+from users.forms import AcademySignUpForm
 
 from .forms import CourseEnrollForm
 
 # Create your views here.
 
 
-class StudentRegistrationView(CreateView):
-    template_name: str = "students/student/registration.html"
-    form_class = UserCreationForm
-    success_url = reverse_lazy("students:student_course_list")
+# class StudentRegistrationView(CreateView):
+#     template_name: str = "students/student/registration.html"
+#     form_class = AcademySignUpForm
+#     success_url = reverse_lazy("students:student_course_list")
 
-    def dispatch(self, request, *args, **kwargs):
-        if self.request.user.is_authenticated:
-            return redirect("/")
-        return super().dispatch(request, *args, **kwargs)
+#     def dispatch(self, request, *args, **kwargs):
+#         if self.request.user.is_authenticated:
+#             return redirect("/")
+#         return super().dispatch(request, *args, **kwargs)
 
-    def form_valid(self, form):
-        result = super().form_valid(form)
-        cd = form.cleaned_data
-        user = authenticate(username=cd["username"], password=cd["password"])
-        login(self.request, user)
-        return result
+#     def form_valid(self, form):
+#         result = super().form_valid(form)
+#         cd = form.cleaned_data
+#         user = authenticate(username=cd["username"], password=cd["password"])
+#         login(self.request, user)
+#         return result
 
 
 class StudentEnrollCourseView(LoginRequiredMixin, FormView):
@@ -42,7 +43,9 @@ class StudentEnrollCourseView(LoginRequiredMixin, FormView):
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse_lazy("students:student_course_detail", args=[self.course.id])
+        return reverse_lazy(
+            "students:student_course_detail", args=[self.course.id]
+        )
 
 
 class StudentCourseListView(LoginRequiredMixin, ListView):
