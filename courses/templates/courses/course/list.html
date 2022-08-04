@@ -21,7 +21,7 @@ All courses
     <h3>Series</h3>
     <ul id="modules">
         <li {% if not subject %}class="selected"{% endif %} >
-            <a href="{% url 'course_list' %}">All</a>
+            <a href="{% url 'courses:course_list' %}">All</a>
         </li>
         {% for s in series %}
         <li {% if subject == s %}class="selected"{% endif %} >
