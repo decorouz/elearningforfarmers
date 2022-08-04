@@ -4,7 +4,7 @@ from . import views
 
 app_name = "courses"
 urlpatterns = [
-    path("", views.HomeView.as_view(), name="home"),
+    path("", views.CourseListView.as_view(), name="course_list"),
     path(
         "mine/",
         views.ManageCourseList.as_view(),
@@ -12,7 +12,9 @@ urlpatterns = [
     ),
     path("create/", views.CourseCreateView.as_view(), name="course_create"),
     path("<pk>/edit/", views.CourseUpdateView.as_view(), name="course_edit"),
-    path("<pk>/delete/", views.CourseDeleteView.as_view(), name="course_delete"),
+    path(
+        "<pk>/delete/", views.CourseDeleteView.as_view(), name="course_delete"
+    ),
     path(
         "<pk>/module",
         views.CourseModuleUpdateView.as_view(),
@@ -38,7 +40,9 @@ urlpatterns = [
         views.ModuleContentListView.as_view(),
         name="module_content_list",
     ),
-    path("module/order/", views.ModuleOrderView.as_view(), name="module_order"),
+    path(
+        "module/order/", views.ModuleOrderView.as_view(), name="module_order"
+    ),
     path(
         "content/order/",
         views.ContentOrderView.as_view(),
@@ -51,5 +55,7 @@ urlpatterns = [
         name="course_list_series",
     ),
     # display a single course overview
-    path("<slug:slug>/", views.CourseDetailView.as_view(), name="course_detail"),
+    path(
+        "<slug:slug>/", views.CourseDetailView.as_view(), name="course_detail"
+    ),
 ]
